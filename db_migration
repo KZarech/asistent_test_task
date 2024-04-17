@@ -4,4 +4,5 @@ CREATE TABLE `asistent_task`.`users`
 (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
  `name` VARCHAR(100) NOT NULL ,
  `email` VARCHAR(255) NOT NULL ,
+ `password` TEXT NOT NULL,
  `phone_number` BIGINT UNSIGNED);

@@ -19,4 +19,8 @@ class UserHandler
 //    public static function getUserList() {
 //
 //    }
+
+//    public static function authUser() {
+//
+//    }
 }
