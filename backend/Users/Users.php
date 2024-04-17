@@ -32,6 +32,7 @@ class Users
                 "id" => $row["id"],
                 "name" => $row["name"],
                 "phone" => $row["phone_number"],
+                "email" => $row["email"],
             ];
         }
 
