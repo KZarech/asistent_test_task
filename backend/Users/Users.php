@@ -13,9 +13,15 @@ class Users
 //
 //    }
 
-//    public static function deleteUser() {
-//
-//    }
+    public static function deleteUser($id) {
+        $db = new DBConnection();
+        $table = self::$tableName;
+
+        $sql = "DELETE FROM $table WHERE `id` = $id";
+        $res = $db->execQuery($sql);
+
+        echo json_encode($res, JSON_UNESCAPED_UNICODE);
+    }
 
     public static function getUserList() {
         $db = new DBConnection();

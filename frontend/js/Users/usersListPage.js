@@ -4,7 +4,26 @@ class UsersListPage {
     }
 
     deleteUser(id) {
-        console.log(`delete user with id ${id}`);
+        const parentBlock = document.querySelector('#usersListContainer');
+        const userBlock = document.querySelector(`#user-${id}`);
+
+        $.ajax({
+            url: '../../../backend/Users/handlers/DeleteUserHandler.php',
+            method: 'POST',
+            data: {
+                id: id,
+            },
+            success: (res) => {
+                if (res === '"success"') {
+                    parentBlock.removeChild(userBlock);
+                } else {
+                    alert('Не удалось удалить пользователя');
+                }
+            },
+            error: (xhr, status, error) => {
+                console.error(xhr.responseText);
+            }
+        });
     }
 
     renderUser(parentElId, id, name, email, phone) {
@@ -49,10 +68,6 @@ class UsersListPage {
             method: 'GET',
             success: (res) => {
                 const users = JSON.parse(res).response.users;
-                console.log(users);
-
-                const usersBlock = document.querySelector('#usersListContainer');
-                console.log(usersBlock);
 
                 users.forEach(user => {
                     this.renderUser('usersListContainer', user.id, user.name, user.email, user.phone);
@@ -71,3 +86,5 @@ $(document).ready(function () {
 
     usersListPage.renderUserList();
 })
+
+const usersListPage = new UsersListPage();
