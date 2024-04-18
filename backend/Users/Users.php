@@ -54,6 +54,7 @@ class Users
     }
 
     public static function getUserList() {
+        SessionCheck::checkSession();
         list($db, $table) = self::getConnectionAndTable();
 
         $sql = "SELECT * FROM $table";
@@ -75,7 +76,26 @@ class Users
         echo json_encode($response,JSON_UNESCAPED_UNICODE);
     }
 
-//    public static function authUser() {
-//
-//    }
+    public static function authUser($email, $password) {
+        session_start();
+        list($db, $table) = self::getConnectionAndTable();
+
+        $sql = "SELECT id FROM `$table` WHERE `email` = '$email' AND `password` = '$password'";
+        $res = $db->execQuery($sql, true);
+
+        if ($res->num_rows > 0) {
+            $data = [];
+            while ($row = $res->fetch_assoc()) {
+                $data["user"] = $row;
+            }
+
+            $userId = $data["user"]["id"];
+            $_SESSION["userId"] = $userId;
+            setcookie("userId", $userId, time() + (86400 * 7), "/");
+
+            echo json_encode($data,JSON_UNESCAPED_UNICODE);
+        } else {
+            echo "user not found";
+        }
+    }
 }
