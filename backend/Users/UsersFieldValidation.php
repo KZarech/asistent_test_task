@@ -44,13 +44,18 @@ class UsersFieldValidation
         return true;
     }
 
-    public static function validateAllFields($name, $email, $password, $phone) {
+    public static function validateFields($name = "", $email = "", $password = "", $phone = "") {
         $errors = [];
-        $errors[] = self::validateName($name);
-        $errors[] = self::validateEmail($email);
-        $errors[] = self::isEmailUnique($email);
-        $errors[] = self::validatePassword($password);
-        $errors[] = self::validatePhone($phone);
+        if (isset($name))
+            $errors[] = self::validateName($name);
+        if (isset($email)) {
+            $errors[] = self::validateEmail($email);
+            $errors[] = self::isEmailUnique($email);
+        }
+        if (isset($password))
+            $errors[] = self::validatePassword($password);
+        if (isset($phone))
+            $errors[] = self::validatePhone($phone);
 
         return $errors;
     }

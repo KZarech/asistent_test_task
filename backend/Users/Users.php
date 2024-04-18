@@ -12,14 +12,21 @@ class Users
         return [$db, $table];
     }
 
-    public static function registerUser($password, $name, $email, $phone) {
-        $validatedFields = UsersFieldValidation::validateAllFields($name, $email, $password, $phone);
+    private static function validateFieldsAndGetResult($name, $email, $password, $phone): array
+    {
+        $validatedFields = UsersFieldValidation::validateFields($name, $email, $password, $phone);
 
         $filteredFields = array_filter($validatedFields, function($item) {
             return $item === true;
         });
 
         $allTrue = count($filteredFields) === count($validatedFields);
+
+        return [$validatedFields, $allTrue];
+    }
+
+    public static function registerUser($password, $name, $email, $phone) {
+        list($validatedFields, $allTrue) = self::validateFieldsAndGetResult($name, $email, $password, $phone);
 
         if ($allTrue) {
             list($db, $table) = self::getConnectionAndTable();
@@ -33,15 +40,19 @@ class Users
         }
     }
 
-    public static function editUser($id, $name, $email, $phone) {
-        // TODO: create middleware/method to validate user fields and another one to check if email is unique
+    public static function editUser($id, $name, $phone) {
+        list($validatedFields, $allTrue) = self::validateFieldsAndGetResult($name, null, null, $phone);
 
-        list($db, $table) = self::getConnectionAndTable();
+        if ($allTrue) {
+            list($db, $table) = self::getConnectionAndTable();
 
-        $sql = "UPDATE `$table` SET `name`='$name',`email`='$email',`phone_number`=$phone WHERE `id` = $id";
-        $res = $db->execQuery($sql);
+            $sql = "UPDATE `$table` SET `name`='$name',`phone_number`=$phone WHERE `id` = $id";
+            $res = $db->execQuery($sql);
 
-        echo json_encode($res, JSON_UNESCAPED_UNICODE);
+            echo json_encode($res, JSON_UNESCAPED_UNICODE);
+        } else {
+            echo json_encode($validatedFields, JSON_UNESCAPED_UNICODE);
+        }
     }
 
     public static function deleteUser($id) {
@@ -54,26 +65,30 @@ class Users
     }
 
     public static function getUserList() {
-        SessionCheck::checkSession();
-        list($db, $table) = self::getConnectionAndTable();
+        $check = SessionCheck::checkSession();
+        if (!$check) {
+            list($db, $table) = self::getConnectionAndTable();
 
-        $sql = "SELECT * FROM $table";
+            $sql = "SELECT * FROM $table";
 
-        $data = ["users" => []];
+            $data = ["users" => []];
 
-        $res = $db->execQuery($sql, true);
+            $res = $db->execQuery($sql, true);
 
-        while ($row = $res->fetch_assoc()) {
-            $data["users"][] = [
-                "id" => $row["id"],
-                "name" => $row["name"],
-                "phone" => $row["phone_number"],
-                "email" => $row["email"],
-            ];
+            while ($row = $res->fetch_assoc()) {
+                $data["users"][] = [
+                    "id" => $row["id"],
+                    "name" => $row["name"],
+                    "phone" => $row["phone_number"],
+                    "email" => $row["email"],
+                ];
+            }
+
+            $response["response"] = $data;
+            echo json_encode($response,JSON_UNESCAPED_UNICODE);
+        } else {
+            echo $check;
         }
-
-        $response["response"] = $data;
-        echo json_encode($response,JSON_UNESCAPED_UNICODE);
     }
 
     public static function authUser($email, $password) {

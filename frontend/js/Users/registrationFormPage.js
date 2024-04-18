@@ -53,22 +53,7 @@ class RegistrationFormPage {
                         console.log(res);
                         console.log(Array.isArray(res))
                         if (Array.isArray(res)) {
-                            let message = 'Не удалось зарегистрировать пользователя.';
-                            res.forEach(val => {
-                                if (typeof val === 'string') {
-                                    if (val.includes('email') && !val.includes('registered'))
-                                        message += ' Введите правильный email;';
-                                    if (val.includes('phone'))
-                                        message += ' Введите правильный номер телефона (10 символов);';
-                                    if (val.includes('name'))
-                                        message += ' Введите правильное имя (не больше 100 символов);';
-                                    if (val.includes('password'))
-                                        message += ' Введите правильный пароль (не меньше 8 символов);';
-                                    if (val.includes('registered'))
-                                        message += ' Введенный email уже зарегистрирован;'
-                                }
-                            })
-                            alert(message);
+                            validation.handleValidationResponse(res, 'Не удалось зарегистрировать пользователя.');
                         } else {
                             alert('Не удалось зарегистрировать пользователя');
                         }
@@ -79,12 +64,11 @@ class RegistrationFormPage {
                 }
             });
         }
-
-
     }
 }
 
 
 const registrationFormPage = new RegistrationFormPage();
+const validation = new UserFieldValidation();
 document.querySelector('#userSaveBtn').addEventListener('click', registrationFormPage.registerUser.bind(registrationFormPage));
 document.querySelector('#userClearBtn').addEventListener('click', registrationFormPage.resetFieldsValues.bind(registrationFormPage));

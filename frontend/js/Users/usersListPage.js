@@ -1,8 +1,6 @@
 class UsersListPage {
     editUser(id) {
-        console.log(`edit user with id ${id}`);
         const name = document.querySelector(`#user-${id}-name`).value.trim();
-        const email = document.querySelector(`#user-${id}-email`).value.trim();
         const phone = document.querySelector(`#user-${id}-phone`).value.trim();
 
         $.ajax({
@@ -11,14 +9,18 @@ class UsersListPage {
             data: {
                 id: id,
                 name: name,
-                email: email,
                 phone: phone,
             },
             success: (res) => {
                 if (res === '"success"') {
                     alert('Данные пользователя успешно обновлены');
                 } else {
-                    alert('Не удалось обновить данные пользователя');
+                    res = JSON.parse(res);
+                    if (Array.isArray(res)) {
+                        validation.handleValidationResponse(res, 'Не удалось обновить данные пользователя.');
+                    } else {
+                        alert('Не удалось обновить данные пользователя');
+                    }
                 }
             },
             error: (xhr, status, error) => {
@@ -30,24 +32,29 @@ class UsersListPage {
     deleteUser(id) {
         const parentBlock = document.querySelector('#usersListContainer');
         const userBlock = document.querySelector(`#user-${id}`);
+        const cookieId = common.getCookie('userId');
 
-        $.ajax({
-            url: '../../../backend/Users/handlers/DeleteUserHandler.php',
-            method: 'POST',
-            data: {
-                id: id,
-            },
-            success: (res) => {
-                if (res === '"success"') {
-                    parentBlock.removeChild(userBlock);
-                } else {
-                    alert('Не удалось удалить пользователя');
+        if (id == cookieId) {
+            alert('Нельзя удалить самого себя');
+        } else {
+            $.ajax({
+                url: '../../../backend/Users/handlers/DeleteUserHandler.php',
+                method: 'POST',
+                data: {
+                    id: id,
+                },
+                success: (res) => {
+                    if (res === '"success"') {
+                        parentBlock.removeChild(userBlock);
+                    } else {
+                        alert('Не удалось удалить пользователя');
+                    }
+                },
+                error: (xhr, status, error) => {
+                    console.error(xhr.responseText);
                 }
-            },
-            error: (xhr, status, error) => {
-                console.error(xhr.responseText);
-            }
-        });
+            });
+        }
     }
 
     renderUser(parentElId, id, name, email, phone) {
@@ -66,8 +73,7 @@ class UsersListPage {
                     <input id="user-${id}-phone" value="${phone}" type="text" id="phone" name="phone" required>
                 </div>
                 <div>
-                    <label for="name">Email:</label>
-                    <input id="user-${id}-email" value="${email}" type="email" id="email" name="email" required>
+                    <label for="name">Email: ${email}</label>
                 </div>
         </div>
 
@@ -85,11 +91,15 @@ class UsersListPage {
             url: '../../../backend/Users/handlers/LoadUserHandler.php',
             method: 'GET',
             success: (res) => {
-                const users = JSON.parse(res).response.users;
+                if (typeof res === 'string' && res.includes('authorized')) {
+                    window.location.href = "/index.php";
+                } else {
+                    const users = JSON.parse(res).response.users;
 
-                users.forEach(user => {
-                    this.renderUser('usersListContainer', user.id, user.name, user.email, user.phone);
-                })
+                    users.forEach(user => {
+                        this.renderUser('usersListContainer', user.id, user.name, user.email, user.phone);
+                    })
+                }
             },
             error: (xhr, status, error) => {
                 console.error(xhr.responseText);
@@ -106,3 +116,5 @@ $(document).ready(function () {
 })
 
 const usersListPage = new UsersListPage();
+const validation = new UserFieldValidation();
+const common = new Common();

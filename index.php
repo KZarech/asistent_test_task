@@ -20,6 +20,10 @@
         <a class="button navigationBtn" href="frontend/pages/registrationForm.html">Регистрация</a>
         <a class="button navigationBtn" href="frontend/pages/authUser.html">Авторизация</a>
     </div>
+
+    <div class="buttons">
+        <a class="button navigationBtn" href="frontend/pages/usersList.html">Список пользователей (для авторизованных пользователей)</a>
+    </div>
 </div>
 
 </body>
