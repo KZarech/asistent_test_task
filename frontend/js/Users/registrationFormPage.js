@@ -47,12 +47,13 @@ class RegistrationFormPage {
                         console.log('registered');
                         alert('Пользователь успешно загеристрирован');
                         this.resetFieldsValues();
+                        window.location.href = "/frontend/pages/authUser.html";
                     } else {
                         res = JSON.parse(res);
                         console.log(res);
                         console.log(Array.isArray(res))
                         if (Array.isArray(res)) {
-                            let message = 'Не удалось обновить данные пользователя.';
+                            let message = 'Не удалось зарегистрировать пользователя.';
                             res.forEach(val => {
                                 if (typeof val === 'string') {
                                     if (val.includes('email') && !val.includes('registered'))

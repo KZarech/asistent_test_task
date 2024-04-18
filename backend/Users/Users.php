@@ -13,11 +13,13 @@ class Users
     }
 
     public static function registerUser($password, $name, $email, $phone) {
-        $array = [$password, $name, $email, $phone];
+        $validatedFields = UsersFieldValidation::validateAllFields($name, $email, $password, $phone);
 
-        $allTrue = array_reduce($array, function($carry, $item) {
-            return $carry && $item;
-        }, true);
+        $filteredFields = array_filter($validatedFields, function($item) {
+            return $item === true;
+        });
+
+        $allTrue = count($filteredFields) === count($validatedFields);
 
         if ($allTrue) {
             list($db, $table) = self::getConnectionAndTable();
@@ -27,7 +29,7 @@ class Users
 
             echo json_encode($res, JSON_UNESCAPED_UNICODE);
         } else {
-            echo json_encode(UsersFieldValidation::validateAllFields($name, $email, $password, $phone), JSON_UNESCAPED_UNICODE);
+            echo json_encode($validatedFields, JSON_UNESCAPED_UNICODE);
         }
     }
 
