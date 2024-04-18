@@ -1,6 +1,30 @@
 class UsersListPage {
     editUser(id) {
         console.log(`edit user with id ${id}`);
+        const name = document.querySelector(`#user-${id}-name`).value;
+        const email = document.querySelector(`#user-${id}-email`).value;
+        const phone = document.querySelector(`#user-${id}-phone`).value;
+
+        $.ajax({
+            url: '../../../backend/Users/handlers/UpdateUserHandler.php',
+            method: 'POST',
+            data: {
+                id: id,
+                name: name,
+                email: email,
+                phone: phone,
+            },
+            success: (res) => {
+                if (res === '"success"') {
+                    alert('Данные пользователя успешно обновлены');
+                } else {
+                    alert('Не удалось обновить данные пользователя');
+                }
+            },
+            error: (xhr, status, error) => {
+                console.error(xhr.responseText);
+            }
+        });
     }
 
     deleteUser(id) {
@@ -34,22 +58,16 @@ class UsersListPage {
         userWrapper.innerHTML = `
             <div class="userForm-fields">
                 <div>
-                    <div>
-                        <label for="name">Имя:</label>
-                        <input value="${name}" type="text" id="name" name="name" required>
-                    </div>
+                    <label for="name">Имя:</label>
+                    <input id="user-${id}-name" value="${name}" type="text" id="name" name="name" required>
                 </div>
                 <div>
-                    <div>
-                        <label for="phone">Телефон:</label>
-                        <input value="${phone}" type="text" id="phone" name="phone" required>
-                    </div>
+                    <label for="phone">Телефон:</label>
+                    <input id="user-${id}-phone" value="${phone}" type="text" id="phone" name="phone" required>
                 </div>
                 <div>
-                    <div>
-                        <label for="name">Email:</label>
-                        <input value="${email}" type="email" id="email" name="email" required>
-                    </div>
+                    <label for="name">Email:</label>
+                    <input id="user-${id}-email" value="${email}" type="email" id="email" name="email" required>
                 </div>
         </div>
 

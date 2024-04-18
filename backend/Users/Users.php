@@ -5,17 +5,30 @@ class Users
 {
     private static string $tableName = "users";
 
+    private static function getConnectionAndTable(): array {
+        $db = new DBConnection();
+        $table = self::$tableName;
+
+        return [$db, $table];
+    }
+
 //    public static function createUser() {
 //
 //    }
 
-//    public static function editUser() {
-//
-//    }
+    public static function editUser($id, $name, $email, $phone) {
+        // TODO: create middleware/method to validate user fields and another one to check if email is unique
+
+        list($db, $table) = self::getConnectionAndTable();
+
+        $sql = "UPDATE $table SET `name`='$name',`email`='$email',`phone_number`=$phone WHERE `id` = $id";
+        $res = $db->execQuery($sql);
+
+        echo json_encode($res, JSON_UNESCAPED_UNICODE);
+    }
 
     public static function deleteUser($id) {
-        $db = new DBConnection();
-        $table = self::$tableName;
+        list($db, $table) = self::getConnectionAndTable();
 
         $sql = "DELETE FROM $table WHERE `id` = $id";
         $res = $db->execQuery($sql);
@@ -24,8 +37,7 @@ class Users
     }
 
     public static function getUserList() {
-        $db = new DBConnection();
-        $table = self::$tableName;
+        list($db, $table) = self::getConnectionAndTable();
 
         $sql = "SELECT * FROM $table";
 
