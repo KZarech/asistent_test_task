@@ -1,0 +1,31 @@
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.button {
+    padding: 8px 24px;
+    color: white;
+    border-radius: 8px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.mainBtn {
+    background: darkgreen;
+}
+
+.secondaryBtn {
+    background: darkred;
+}
+
+.navigationBtn {
+    background: darkgray;
+}
