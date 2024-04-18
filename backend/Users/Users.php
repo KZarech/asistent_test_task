@@ -12,9 +12,24 @@ class Users
         return [$db, $table];
     }
 
-//    public static function createUser() {
-//
-//    }
+    public static function registerUser($password, $name, $email, $phone) {
+        $array = [$password, $name, $email, $phone];
+
+        $allTrue = array_reduce($array, function($carry, $item) {
+            return $carry && $item;
+        }, true);
+
+        if ($allTrue) {
+            list($db, $table) = self::getConnectionAndTable();
+
+            $sql = "INSERT INTO `$table` (`name`, `email`, `password`, `phone_number`) VALUES ('$name','$email','$password','$phone')";
+            $res = $db->execQuery($sql);
+
+            echo json_encode($res, JSON_UNESCAPED_UNICODE);
+        } else {
+            echo json_encode(UsersFieldValidation::validateAllFields($name, $email, $password, $phone), JSON_UNESCAPED_UNICODE);
+        }
+    }
 
     public static function editUser($id, $name, $email, $phone) {
         // TODO: create middleware/method to validate user fields and another one to check if email is unique

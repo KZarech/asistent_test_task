@@ -1,9 +1,9 @@
 class UsersListPage {
     editUser(id) {
         console.log(`edit user with id ${id}`);
-        const name = document.querySelector(`#user-${id}-name`).value;
-        const email = document.querySelector(`#user-${id}-email`).value;
-        const phone = document.querySelector(`#user-${id}-phone`).value;
+        const name = document.querySelector(`#user-${id}-name`).value.trim();
+        const email = document.querySelector(`#user-${id}-email`).value.trim();
+        const phone = document.querySelector(`#user-${id}-phone`).value.trim();
 
         $.ajax({
             url: '../../../backend/Users/handlers/UpdateUserHandler.php',
