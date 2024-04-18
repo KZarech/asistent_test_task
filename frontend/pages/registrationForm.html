@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User registration</title>
+    <link rel="stylesheet" href="../styles/common.css">
+</head>
+<body>
+
+<div class="container">
+    <form id="userForm">
+        <div class="form-group">
+                <div>
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div>
+                    <label for="name">Телефон:</label>
+                    <input type="text" id="phone" name="phone" required>
+                </div>
+                <div>
+                    <label for="name">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label for="name">Пароль:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+        </div>
+
+        <div class="buttons">
+            <button class="button mainBtn" id="userSaveBtn" type="button">Регистрация</button>
+            <button class="button secondaryBtn" id="userClearBtn" type="button">Очистить форму</button>
+        </div>
+    </form>
+
+    <div class="buttons">
+        <a class="button navigationBtn" href="authUser.html">Авторизоваться</a>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../js/Users/userFieldValidation.js"></script>
+<script src="../js/Users/registrationFormPage.js"></script>
+
+</body>
+</html>

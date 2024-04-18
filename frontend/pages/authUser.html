@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User auth</title>
+    <link rel="stylesheet" href="../styles/common.css">
+</head>
+<body>
+
+<div class="container">
+    <form id="authForm">
+        <div class="form-group">
+            <div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button id="authUserBtn" class="button mainBtn" type="button">Войти</button>
+            <a class="button navigationBtn" href="registrationForm.html">Зарегистрироваться</a>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../js/Users/authPage.js"></script>
+
+</body>
+</html>
