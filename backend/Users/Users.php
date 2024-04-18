@@ -36,7 +36,7 @@ class Users
 
         list($db, $table) = self::getConnectionAndTable();
 
-        $sql = "UPDATE $table SET `name`='$name',`email`='$email',`phone_number`=$phone WHERE `id` = $id";
+        $sql = "UPDATE `$table` SET `name`='$name',`email`='$email',`phone_number`=$phone WHERE `id` = $id";
         $res = $db->execQuery($sql);
 
         echo json_encode($res, JSON_UNESCAPED_UNICODE);

@@ -53,10 +53,10 @@ class UsersListPage {
     renderUser(parentElId, id, name, email, phone) {
         const parent = document.querySelector(`#${parentElId}`)
         const userWrapper = document.createElement('div');
-        userWrapper.classList.add('user');
+        userWrapper.classList.add('users');
         userWrapper.setAttribute('id', `user-${id}`);
         userWrapper.innerHTML = `
-            <div class="userForm-fields">
+            <div class="form-group">
                 <div>
                     <label for="name">Имя:</label>
                     <input id="user-${id}-name" value="${name}" type="text" id="name" name="name" required>
@@ -72,8 +72,8 @@ class UsersListPage {
         </div>
 
         <div class="buttons">
-            <button onclick="usersListPage.editUser(${id})" style="background-color: green; color: white" type="button">Редактировать</button>
-            <button onclick="usersListPage.deleteUser(${id})" style="background-color: red; color: white" type="button">Удалить</button>
+            <button onclick="usersListPage.editUser(${id})" class="button mainBtn" type="button">Редактировать</button>
+            <button onclick="usersListPage.deleteUser(${id})" class="button secondaryBtn" type="button">Удалить</button>
         </div>
         `;
 

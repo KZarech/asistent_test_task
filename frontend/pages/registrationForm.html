@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>User registration</title>
+    <link rel="stylesheet" href="../styles/common.css">
 </head>
 <body>
 
 <div class="container">
     <form id="userForm">
-        <div class="userForm-fields">
+        <div class="form-group">
                 <div>
                     <label for="name">Имя:</label>
                     <input type="text" id="name" name="name" required>
@@ -28,12 +29,14 @@
         </div>
 
         <div class="buttons">
-            <button id="userSaveBtn" style="background-color: green; color: white" type="button">Регистрация</button>
-            <button id="userClearBtn" style="background-color: red; color: white" type="button">Очистить форму</button>
+            <button class="button mainBtn" id="userSaveBtn" type="button">Регистрация</button>
+            <button class="button secondaryBtn" id="userClearBtn" type="button">Очистить форму</button>
         </div>
     </form>
 
-    <a href="authUser.html">На страницу авторизации</a>
+    <div class="buttons">
+        <a class="button navigationBtn" href="authUser.html">Авторизоваться</a>
+    </div>
 
 </div>
 
